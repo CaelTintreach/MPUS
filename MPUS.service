@@ -1,0 +1,12 @@
+[Unit]
+Description=MPUS Service
+[Service]
+User=MPUS-user
+WorkingDirectory=/opt/MPUS
+EnvironmentFile=/opt/MPUS/flask.env
+ExecStart=/bin/sh \
+	-c 'cd /opt/MPUS && \
+	. /venv/bin/activate && \
+	gunicorn --workers=4 --workers=4 --bind=0.0.0.0:5000 app:app'
+[Install]
+WantedBy=multi-user.target
