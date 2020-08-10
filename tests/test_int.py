@@ -16,13 +16,12 @@ test_userstory_desc = "Test Desc"
 
 class TestBase(LiveServerTestCase):
 
-	def create_app(self):
+	def create_app(self): #Set environmental variables
 		app.config['SQLALCHEMY_DATABASE_URI'] = str(getenv('TEST_DATABASE'))
 		app.config['SECRET_KEY'] = getenv('SKEY')
 		return app
 
-	def setUp(self):
-		"""Setup the test driver and create test users"""
+	def setUp(self): #Setup the test driver
 		print("--------------------------NEXT-TEST----------------------------------------------")
 		chrome_options = Options()
 		chrome_options.binary_location = "/usr/bin/chromium-browser"
@@ -33,15 +32,15 @@ class TestBase(LiveServerTestCase):
 		db.drop_all()
 		db.create_all()
 
-	def tearDown(self):
+	def tearDown(self): #Remove the test driver once it is completed
 		self.driver.quit()
 		print("--------------------------END-OF-TEST----------------------------------------------\n\n\n-------------------------UNIT-AND-SELENIUM-TESTS----------------------------------------------")
 
-	def test_server_is_up_and_running(self):
+	def test_server_is_up_and_running(self): #Test the server is currently running
 		response = urlopen("http://localhost:5000")
 		self.assertEqual(response.code, 200)
 
-class TestProjectView(TestBase):
+class TestProjectView(TestBase): #This function will test to ensure the button for projects view is working
 
 	def test_projectview(self):
 		self.driver.find_element_by_xpath("/html/body/div/a[3]").click()
@@ -52,7 +51,7 @@ class TestProjectView(TestBase):
 	if __name__ == '__main__':
 		unittest.main(port=5000)
 
-class TestUserStoryView(TestBase):
+class TestUserStoryView(TestBase): #This function will test to ensure the button for user stories view is working
 
 	def test_userstoryview(self):
 		self.driver.find_element_by_xpath("/html/body/div/a[5]").click()
@@ -63,7 +62,7 @@ class TestUserStoryView(TestBase):
 	if __name__ == '__main__':
 		unittest.main(port=5000)
 
-class TestAllButtons(TestBase):
+class TestAllButtons(TestBase): #This function will test all the buttons in the navbar to ensure functionality
 
 	def test_allbuttons(self):
 		self.driver.find_element_by_xpath("/html/body/div/a[1]").click()
@@ -81,7 +80,8 @@ class TestAllButtons(TestBase):
 	if __name__ == '__main__':
 		unittest.main(port=5000)
 
-class TestAddProject(TestBase):
+class TestAddProject(TestBase): #Test function for testing 
+
 	def test_addproject(self):
 		self.driver.find_element_by_xpath("/html/body/div/a[2]").click()
 		self.driver.find_element_by_xpath("/html/body/div[2]/form/div[1]/input").send_keys(test_project_name)
